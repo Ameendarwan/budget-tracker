@@ -30,18 +30,29 @@ const Analysis = () => {
 
   return (
     <div className="flex flex-col gap-2">
+      {/* Page Title */}
       <div className="flex flex-row flex-wrap items-center justify-between">
-        <h4 className="text-[32px] font-semibold text-text">Analysis</h4>
+        <h4 className="text-[32px] font-semibold text-text" aria-label="Analysis page title">
+          Analysis
+        </h4>
       </div>
+
       <Separator />
+
+      {/* Main Card for Expense Analysis */}
       <Card>
+        {/* Title and Filter */}
         <TitleSection title="Expense">
-          <div className="flex flex-row items-center">
-            <span className="flex h-[32px] w-[65px] items-center justify-center rounded-bl-md rounded-tl-md border border-r-0 bg-[#E1E8F2] text-xs text-grayShades-shade4">
+          <div className="flex flex-row items-center" role="group" aria-label="Date range filter for expense analysis">
+            <span
+              className="flex h-[32px] w-[65px] items-center justify-center rounded-bl-md rounded-tl-md border border-r-0 bg-[#E1E8F2] text-xs text-grayShades-shade4"
+              aria-hidden>
               Range
             </span>
             <Select onValueChange={setSortBy} value={sortBy}>
-              <SelectTrigger className="h-[32px] w-36 rounded-md rounded-bl-none rounded-tl-none border border-l-0 border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-sm font-medium text-[#111827] shadow-none hover:bg-[#F3F4F6] focus:ring-0">
+              <SelectTrigger
+                className="h-[32px] w-36 rounded-md rounded-bl-none rounded-tl-none border border-l-0 border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-sm font-medium text-[#111827] shadow-none hover:bg-[#F3F4F6] focus:ring-0"
+                aria-label="Select date range">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
 
@@ -51,7 +62,8 @@ const Analysis = () => {
                     <SelectItem
                       key={option.value}
                       value={option.value}
-                      className="cursor-pointer px-4 py-2 pl-8 text-sm text-[#374151] hover:bg-gray-100 focus:bg-gray-100">
+                      className="cursor-pointer px-4 py-2 pl-8 text-sm text-[#374151] hover:bg-gray-100 focus:bg-gray-100"
+                      aria-label={`Select ${option.label}`}>
                       {option.label}
                     </SelectItem>
                   ))}
@@ -60,7 +72,9 @@ const Analysis = () => {
             </Select>
           </div>
         </TitleSection>
-        <CardContent className="p-4">
+
+        {/* Chart Content */}
+        <CardContent className="rounded-bl-[8px] rounded-br-[8px] border border-t-0 p-4">
           <AnalysisLineChart data={data ?? []} />
         </CardContent>
       </Card>

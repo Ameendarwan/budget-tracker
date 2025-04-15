@@ -33,12 +33,15 @@ const ExpenseFilters: FC<ExpenseFiltersProps> = ({
 }) => {
   return (
     <div className="flex flex-row items-center justify-end gap-3 max-md:flex-wrap">
+      {/* Sort by dropdown */}
       <div className="flex flex-row items-center">
         <span className="flex h-[32px] min-w-[65px] items-center justify-center rounded-bl-md rounded-tl-md border border-r-0 bg-[#E1E8F2] text-xs text-grayShades-shade4">
           Sort By
         </span>
         <Select onValueChange={setSortBy} value={sortBy}>
-          <SelectTrigger className="h-[32px] rounded-md rounded-bl-none rounded-tl-none border border-l-0 border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-sm font-medium text-[#111827] shadow-none hover:bg-[#F3F4F6] focus:ring-0 md:min-w-36">
+          <SelectTrigger
+            aria-label="Sort by option"
+            className="h-[32px] rounded-md rounded-bl-none rounded-tl-none border border-l-0 border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-sm font-medium text-[#111827] shadow-none hover:bg-[#F3F4F6] focus:ring-0 md:min-w-36">
             <SelectValue placeholder="All" />
           </SelectTrigger>
 
@@ -48,7 +51,8 @@ const ExpenseFilters: FC<ExpenseFiltersProps> = ({
                 <SelectItem
                   key={option.value}
                   value={option.value}
-                  className="cursor-pointer px-4 py-2 pl-8 text-sm text-[#374151] hover:bg-gray-100 focus:bg-gray-100">
+                  className="cursor-pointer px-4 py-2 pl-8 text-sm text-[#374151] hover:bg-gray-100 focus:bg-gray-100"
+                  aria-label={option.label}>
                   {option.label}
                 </SelectItem>
               ))}
@@ -57,6 +61,7 @@ const ExpenseFilters: FC<ExpenseFiltersProps> = ({
         </Select>
       </div>
 
+      {/* Date picker using popover */}
       <div className="flex flex-row items-center">
         <span className="flex h-[32px] min-w-[65px] items-center justify-center rounded-bl-md rounded-tl-md border border-r-0 bg-[#E1E8F2] text-xs text-grayShades-shade4">
           By Date
@@ -67,6 +72,7 @@ const ExpenseFilters: FC<ExpenseFiltersProps> = ({
               readOnly
               value={selectedDate ? format(selectedDate, 'dd/MM/yyyy') : ''}
               placeholder="Pick a date"
+              aria-label="Pick a date"
               className="h-[32px] w-full cursor-pointer rounded-md rounded-bl-none rounded-tl-none py-2 pl-3 pr-8 text-left font-normal md:min-w-[150px]"
               icon={<SVGIcon icon="calendar" />}
             />
@@ -82,9 +88,12 @@ const ExpenseFilters: FC<ExpenseFiltersProps> = ({
           </PopoverContent>
         </Popover>
       </div>
+
+      {/* Search input field */}
       <div className="w-full lg:w-[370px]">
         <Input
           placeholder="Search"
+          aria-label="Search expenses"
           value={searchValue}
           onChange={ev => setSearchValue(ev.target.value)}
           className="h-[32px] w-full bg-white placeholder-[#BCC0C9]"

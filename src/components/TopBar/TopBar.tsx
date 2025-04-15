@@ -52,7 +52,7 @@ const TopBar = () => {
             side="bottom"
             align="end"
             sideOffset={15}
-            className="w-80 space-y-2 rounded-[12px] border-none p-2 !shadow-custom">
+            className="h-[400px] w-80 space-y-2 overflow-y-auto rounded-[12px] border-none p-2 !shadow-custom">
             {data?.map(n => (
               <div key={n._id} className="flex items-start gap-3 rounded-xl p-3 transition hover:bg-gray-100">
                 <div className="mt-1">{getSVGIcon(n.type)}</div>

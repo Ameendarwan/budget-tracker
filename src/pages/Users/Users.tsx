@@ -29,8 +29,11 @@ const Users = () => {
 
   return (
     <div className="flex flex-col gap-2">
+      {/* Page title and add/edit user dialog */}
       <div className="flex flex-row flex-wrap items-center justify-between">
-        <h4 className="text-[32px] font-semibold text-text">Users</h4>
+        <h4 className="text-[32px] font-semibold text-text" aria-label="Users page title">
+          Users
+        </h4>
         <AddUserDialog
           mode={!!editUser ? 'edit' : 'create'}
           setIsOpen={setEditUser}
@@ -39,8 +42,13 @@ const Users = () => {
           id={editUser?._id ?? ''}
         />
       </div>
+
+      {/* Delete user dialog */}
       {!!deleteUser && <DeleteUserDialog setIsOpen={setDeleteUser} isOpen={!!deleteUser} user={{ ...deleteUser }} />}
+
       <Separator className="mb-3 bg-border" />
+
+      {/* Filters, table, and pagination section */}
       <div className="rounded-md shadow-md">
         <TitleSection title="Users" className="!px-4">
           <UserFilters
@@ -50,15 +58,29 @@ const Users = () => {
             setSearchValue={setSearchValue}
           />
         </TitleSection>
-        <Table className="w-full border border-t-0 border-border">
+
+        {/* Users table */}
+        <Table className="w-full border border-t-0 border-border" aria-label="Users table">
           <TableHeader>
             <TableRow className="bg-[#F7F7F7]">
               {['First Name', 'Last Name', 'Email', 'Number', 'Role'].map(header => (
-                <TableHead className="text-sm font-semibold text-text">{header}</TableHead>
+                <TableHead
+                  key={header}
+                  className="text-sm font-semibold text-text"
+                  scope="col"
+                  aria-label={`Column header for ${header}`}>
+                  {header}
+                </TableHead>
               ))}
-              <TableHead className="text-right text-sm font-semibold text-text">Actions</TableHead>
+              <TableHead
+                className="text-right text-sm font-semibold text-text"
+                scope="col"
+                aria-label="Column header for actions">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {data?.users?.map(user => (
               <TableRow key={user._id} className="bg-white">
@@ -68,15 +90,25 @@ const Users = () => {
                 <TableCell className="text-sm text-text">{user.phoneNumber}</TableCell>
                 <TableCell className="text-sm text-text">{user.role}</TableCell>
                 <TableCell className="flex flex-row items-center justify-end gap-6 text-right">
-                  <SVGIcon icon="trash" className="cursor-pointer" onClick={() => setDeleteUser(user)} />
-                  <SVGIcon icon="pencil" className="cursor-pointer" onClick={() => setEditUser(user)} />
+                  <SVGIcon
+                    icon="trash"
+                    className="cursor-pointer"
+                    aria-label={`Delete user ${user.firstName} ${user.lastName}`}
+                    onClick={() => setDeleteUser(user)}
+                  />
+                  <SVGIcon
+                    icon="pencil"
+                    className="cursor-pointer"
+                    aria-label={`Edit user ${user.firstName} ${user.lastName}`}
+                    onClick={() => setEditUser(user)}
+                  />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
 
-        {/* Pagination */}
+        {/* Pagination controls */}
         <div className="r flex items-center justify-between border-x bg-white p-4">
           <PaginationInfo total={data?.total ?? 0} page={page} />
           <CustomPagination

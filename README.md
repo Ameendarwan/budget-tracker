@@ -1,4 +1,4 @@
-# Vite Shadcn Template
+# Budget Tracker
 
 This project has been bootstrapped with:
 
@@ -9,7 +9,6 @@ This project has been bootstrapped with:
 - React Router
 - Tailwind
 - Shadcn
-- Husky
 - Stylelint
 - Babel
 - ESLint

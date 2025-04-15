@@ -39,6 +39,7 @@ const Expenses = () => {
 
   return (
     <div className="flex flex-col gap-2">
+      {/* Header with title and AddExpenseDialog */}
       <div className="flex flex-row flex-wrap items-center justify-between">
         <h4 className="text-[32px] font-semibold text-text">Expenses</h4>
         <AddExpenseDialog
@@ -49,6 +50,8 @@ const Expenses = () => {
           id={editExpense?._id ?? ''}
         />
       </div>
+
+      {/* Delete expense confirmation dialog */}
       {!!deleteExpense && (
         <DeleteExpenseDialog
           setIsOpen={setDeleteExpense}
@@ -56,8 +59,11 @@ const Expenses = () => {
           expense={{ ...(deleteExpense ?? {}) }}
         />
       )}
+
       <Separator className="mb-3 bg-border" />
+
       <div className="rounded-md shadow-md">
+        {/* Filters Section */}
         <TitleSection title="Expense" className="!px-4">
           <ExpenseFilters
             sortBy={sortBy}
@@ -68,22 +74,27 @@ const Expenses = () => {
             setSelectedDate={setSelectedDate}
           />
         </TitleSection>
-        <Table className="w-full border border-t-0 border-border">
+
+        {/* Expenses Table */}
+        <Table className="w-full border border-t-0 border-border" aria-label="Expenses table">
           <TableHeader>
             <TableRow className="bg-[#F7F7F7]">
               {['Expense', 'Total Expenditure', 'Price(PKR)', 'Date', 'User'].map(header => (
-                <TableHead className="text-sm font-semibold text-text">{header}</TableHead>
+                <TableHead key={header} className="text-sm font-semibold text-text">
+                  {header}
+                </TableHead>
               ))}
               <TableHead className="text-right text-sm font-semibold text-text">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
+            {/* Mapping expenses into rows */}
             {data?.expenses?.map(expense => (
               <TableRow key={expense.id} className="bg-white">
                 <TableCell className="text-sm text-text">{expense.title}</TableCell>
                 <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <Progress value={40} className="h-2" />
+                  <div className="flex items-center space-x-2" aria-label="Expenditure progress">
+                    <Progress value={40} className="h-2" aria-valuenow={40} aria-valuemin={0} aria-valuemax={100} />
                     <span className="text-sm font-medium text-[#344054]">50%</span>
                   </div>
                 </TableCell>
@@ -93,15 +104,27 @@ const Expenses = () => {
                   {`${expense?.userId?.firstName} ${expense?.userId?.lastName}`}
                 </TableCell>
                 <TableCell className="flex flex-row items-center justify-end gap-6 text-right">
-                  <SVGIcon icon="trash" className="cursor-pointer" onClick={() => setDeleteExpense(expense)} />
-                  <SVGIcon icon="pencil" className="cursor-pointer" onClick={() => setEditExpense(expense)} />
+                  {/* Delete expense icon */}
+                  <SVGIcon
+                    icon="trash"
+                    className="cursor-pointer"
+                    onClick={() => setDeleteExpense(expense)}
+                    aria-label={`Delete expense ${expense.title}`}
+                  />
+                  {/* Edit expense icon */}
+                  <SVGIcon
+                    icon="pencil"
+                    className="cursor-pointer"
+                    onClick={() => setEditExpense(expense)}
+                    aria-label={`Edit expense ${expense.title}`}
+                  />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
 
-        {/* Pagination */}
+        {/* Pagination Controls */}
         <div className="r flex items-center justify-between border-x bg-white p-4">
           <PaginationInfo total={data?.total ?? 0} page={page} />
           <CustomPagination

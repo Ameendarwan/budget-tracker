@@ -7,7 +7,7 @@ import { Button } from '@app/components/Button/Button';
 import { Input } from '@app/components/Input/Input';
 import { SignUpPayload } from '@app/store/apis/auth/types';
 import { paths } from '@app/routes/Routes.utils';
-import { showSuccessToast } from '@app/utils/successToast';
+import { showSuccessToast } from '@app/components/Toast/Toast';
 import signupImage from '@app/assets/auth/sign-up.png';
 import { signupValidationSchema } from './SignUp.utils';
 import { useForm } from 'react-hook-form';
@@ -41,7 +41,7 @@ const SignUp = () => {
           ...data,
         },
       }).unwrap();
-      showSuccessToast('Signup Successfull');
+      showSuccessToast('Signup Successfull', '');
       navigate(paths.signIn);
     } catch {}
   };
