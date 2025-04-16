@@ -24,11 +24,19 @@ const EditAccountDetails: FC<EditAccountDetailsProps> = ({ defaultValues }) => {
 
   const onSubmit = async (values: FormData) => {
     try {
+      // Check for changed fields by comparing with defaultValues
+      const updatedData: any = {};
+
+      Object.keys(values).forEach(key => {
+        if (key && values[key as keyof FormData] !== defaultValues?.[key as keyof FormData]) {
+          if (values[key as keyof FormData] !== undefined) {
+            updatedData[key as keyof FormData] = values[key as keyof FormData];
+          }
+        }
+      });
       await updateUser({
         userId: auth.getDecodedToken()?.id ?? '',
-        body: {
-          ...values,
-        },
+        body: updatedData,
       });
       showSuccessToast('User Updated', 'User edited successfully.!');
     } catch {}

@@ -47,24 +47,39 @@ const AddExpenseDialog: FC<AddExpenseDialogProps> = ({ id, defaultValues, mode =
   };
 
   const onSubmit = (data: ExpensePayload) => {
-    if (mode === 'create') {
-      createExpense({
-        body: {
-          ...data,
-        },
-      });
-      showSuccessToast('Expense created', 'Expense created successfully.!');
-    } else {
-      updateExpense({
-        expenseId: id ?? '',
-        body: {
-          ...data,
-        },
-      });
-      showSuccessToast('Expense Updated', 'Expense edited successfully.!');
-    }
+    try {
+      // Check for changed fields by comparing with defaultValues
+      const updatedData: any = {};
 
-    handleClose();
+      Object.keys(data).forEach(key => {
+        if (key && data[key as keyof ExpensePayload] !== defaultValues[key as keyof ExpensePayload]) {
+          if (data[key as keyof ExpensePayload] !== undefined) {
+            updatedData[key as keyof ExpensePayload] = data[key as keyof ExpensePayload];
+          }
+        }
+      });
+
+      if (mode === 'create') {
+        createExpense({
+          body: {
+            ...data,
+          },
+        }).unwrap();
+
+        showSuccessToast('Expense created', 'Expense created successfully!');
+      } else {
+        // Only send fields that have changed
+        updateExpense({
+          expenseId: id ?? '',
+          body: updatedData,
+        }).unwrap();
+        showSuccessToast('Expense Updated', 'Expense edited successfully!');
+      }
+      form.reset();
+      handleClose();
+    } catch {
+      console.error('Failed to update');
+    }
   };
 
   const isLoading = useMemo(() => createLoading || updateLoading, [createLoading, updateLoading]);

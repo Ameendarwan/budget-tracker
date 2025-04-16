@@ -32,7 +32,7 @@ export const showErrorToast = (title: string, description: string) => {
           <SVGIcon icon="check-error" />
           <div className="flex flex-col gap-1">
             <div className="font-semibold text-[#EA3B3B]">{title}</div>
-            <div className="text-wrap break-words text-sm text-[#A12A44]">{description}</div>
+            <div className="text-wrap break-words text-sm text-[#1A274F]">{description}</div>
           </div>
         </div>
       </div>

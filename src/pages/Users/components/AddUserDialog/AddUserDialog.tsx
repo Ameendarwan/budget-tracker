@@ -46,25 +46,38 @@ const AddUserDialog: FC<AddUserDialogProps> = ({ id, defaultValues, mode = 'crea
   };
 
   const onSubmit = (data: UserPayload) => {
-    if (mode === 'create') {
-      createUser({
-        body: {
-          ...data,
-          role: 'admin',
-        },
-      });
-      showSuccessToast('User created', 'User created successfully.!');
-    } else {
-      updateUser({
-        userId: id ?? '',
-        body: {
-          ...data,
-        },
-      });
-      showSuccessToast('User Updated', 'User edited successfully.!');
-    }
+    try {
+      // Check for changed fields by comparing with defaultValues
+      const updatedData: any = {};
 
-    handleClose();
+      Object.keys(data).forEach(key => {
+        if (key && data[key as keyof UserPayload] !== defaultValues?.[key as keyof UserPayload]) {
+          if (data[key as keyof UserPayload] !== undefined) {
+            updatedData[key as keyof UserPayload] = data[key as keyof UserPayload];
+          }
+        }
+      });
+      if (mode === 'create') {
+        createUser({
+          body: {
+            ...data,
+            role: 'admin',
+          },
+        }).unwrap();
+
+        showSuccessToast('User created', 'User created successfully.!');
+      } else {
+        updateUser({
+          userId: id ?? '',
+          body: updatedData,
+        }).unwrap();
+        showSuccessToast('User Updated', 'User edited successfully.!');
+      }
+      handleClose();
+      form.reset();
+    } catch {
+      console.error('Failed to update user');
+    }
   };
 
   const isLoading = useMemo(() => createLoading || updateLoading, [createLoading, updateLoading]);

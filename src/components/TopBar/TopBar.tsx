@@ -60,8 +60,8 @@ const TopBar = () => {
               sideOffset={15}
               className="max-h-[400px] w-80 space-y-2 overflow-y-auto rounded-[12px] border-none p-2 !shadow-custom">
               {data?.map(n => (
-                <div key={n._id} className="flex items-start gap-3 rounded-xl p-3 transition hover:bg-gray-100">
-                  <div className="mt-1">{getSVGIcon(n.type)}</div>
+                <div key={n._id} className="flex items-start gap-3 rounded-xl p-3 pb-0 transition hover:bg-gray-100">
+                  <div>{getSVGIcon(n.type)}</div>
                   <div className="text-sm">
                     <p className="text-[13px] font-medium text-[#464646]">{n.title}</p>
                     <p className="text-[13px] text-[#464646]">{n.message}</p>
