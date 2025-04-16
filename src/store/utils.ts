@@ -6,6 +6,7 @@ export const baseQuery: FetchBaseQueryArgs = {
   prepareHeaders: headers => {
     const token = auth.token();
     headers.set('Authorization', `Bearer ${token}`);
+    headers.set('credentials', 'include');
     return headers;
   },
 };
