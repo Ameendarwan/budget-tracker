@@ -34,9 +34,9 @@ const SignUp = () => {
     },
   });
 
-  const onSubmit = (data: SignUpPayload) => {
+  const onSubmit = async (data: SignUpPayload) => {
     try {
-      signUp({
+      await signUp({
         body: {
           ...data,
         },
