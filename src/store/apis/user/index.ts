@@ -52,6 +52,18 @@ export const userApi = createApi({
       },
     }),
 
+    uploadProfilePicture: builder.mutation<void, { body: FormData }>({
+      query: ({ body }) => ({
+        url: `user/upload-profile-pic`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: ['User'],
+      onQueryStarted(args, api) {
+        invalidateNotification(api);
+      },
+    }),
+
     updateUser: builder.mutation<void, { userId: string; body: Partial<User> }>({
       query: ({ userId, body }) => ({
         url: `user/${userId}`,
@@ -82,5 +94,6 @@ export const {
   useGetUserQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
+  useUploadProfilePictureMutation,
   useDeleteUserMutation,
 } = userApi;

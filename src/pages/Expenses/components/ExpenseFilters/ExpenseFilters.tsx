@@ -78,13 +78,7 @@ const ExpenseFilters: FC<ExpenseFiltersProps> = ({
             />
           </PopoverTrigger>
           <PopoverContent className="!z-50 w-auto bg-white p-0 !shadow-custom">
-            <Calendar
-              mode="single"
-              disabled={date => date < new Date(new Date().setHours(0, 0, 0, 0))}
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-              initialFocus
-            />
+            <Calendar mode="single" selected={selectedDate} onSelect={setSelectedDate} initialFocus />
           </PopoverContent>
         </Popover>
       </div>

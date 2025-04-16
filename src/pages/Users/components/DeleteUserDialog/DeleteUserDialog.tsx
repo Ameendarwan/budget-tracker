@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 
 import { Button } from '@app/components/Button/Button';
 import { DeleteUserDialogProps } from './types';
-import { showSuccessToast } from '@app/components/Toast/Toast';
+import { showErrorToast } from '@app/components/Toast/Toast';
 import { useDeleteUserMutation } from '@app/store/apis/user';
 
 const DeleteUserDialog: FC<DeleteUserDialogProps> = ({ user, isOpen, setIsOpen }) => {
@@ -17,7 +17,7 @@ const DeleteUserDialog: FC<DeleteUserDialogProps> = ({ user, isOpen, setIsOpen }
     try {
       await deleteUser({ userId: user?._id });
       handleClose();
-      showSuccessToast('User deleted', 'User deleted successfully.!');
+      showErrorToast('User deleted', 'User deleted successfully.!');
     } catch {
       console.error('Failed to delete user');
     }

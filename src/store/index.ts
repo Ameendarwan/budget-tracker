@@ -7,6 +7,7 @@ import { notificationApi } from './apis/notification';
 import notify from './middleware/notify';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userApi } from './apis/user';
+import { userReducer } from './slices/user';
 
 /**
  * Combine all reducers into a single root reducer, extend as needed
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [analysisApi.reducerPath]: analysisApi.reducer,
   [notificationApi.reducerPath]: notificationApi.reducer,
+  user: userReducer,
 });
 
 /**

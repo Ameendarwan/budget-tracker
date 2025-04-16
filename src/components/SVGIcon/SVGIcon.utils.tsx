@@ -20,6 +20,9 @@ export const ICON_NAMES = [
   'success-notify',
   'error-notify',
   'info-notify',
+  'cross',
+  'check-success',
+  'check-error',
 ] as const;
 
 export type IconNames = (typeof ICON_NAMES)[number];
@@ -379,6 +382,76 @@ export const icons: Record<IconNames, (props: Partial<IconProps>) => ReactElemen
         stroke-linecap="round"
         stroke-linejoin="round"
       />
+    </svg>
+  ),
+  'check-success': ({ width = 24, height = 24, className }) => (
+    <svg
+      style={{ height, width }}
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_233_6914)">
+        <circle
+          cx="12"
+          cy="11.9999"
+          r="9"
+          stroke="#08B461"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path d="M15 10L11 14L9 12" stroke="#08B461" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+      <defs>
+        <clipPath id="clip0_233_6914">
+          <rect width="24" height="24" fill="red" />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+  'check-error': ({ width = 24, height = 24, className }) => (
+    <svg
+      style={{ height, width }}
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_233_7265)">
+        <circle
+          cx="12"
+          cy="11.9999"
+          r="9"
+          stroke="#EA3B3B"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path d="M15 10L11 14L9 12" stroke="#EA3B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+      <defs>
+        <clipPath id="clip0_233_7265">
+          <rect width="24" height="24" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+  cross: ({ width = 24, height = 24, className }) => (
+    <svg
+      style={{ height, width }}
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <g opacity="0.3" clip-path="url(#clip0_233_6924)">
+        <path d="M16 8L8 16" stroke="#485273" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M8 8L16 16" stroke="#485273" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+      <defs>
+        <clipPath id="clip0_233_6924">
+          <rect width="24" height="24" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   ),
 };

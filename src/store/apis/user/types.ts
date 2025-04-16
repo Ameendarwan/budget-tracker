@@ -19,6 +19,7 @@ export interface User {
   zipCode?: string;
   budgetLimit?: number;
   city?: string;
+  state?: string;
   jobTitle?: string;
   aboutMe?: string;
   profilePic?: string;

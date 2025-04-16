@@ -15,10 +15,10 @@ const App: FC = () => {
     <Provider store={store}>
       <Toaster
         richColors
-        position="bottom-right"
+        position="top-right"
         toastOptions={{
           duration: 5000,
-          className: 'data-sonner-toast',
+          className: '!left-auto !right-[0px] !top-[40px]',
         }}
       />
       <BrowserRouter>

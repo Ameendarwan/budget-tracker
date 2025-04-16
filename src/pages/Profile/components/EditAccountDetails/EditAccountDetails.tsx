@@ -22,14 +22,16 @@ const EditAccountDetails: FC<EditAccountDetailsProps> = ({ defaultValues }) => {
     defaultValues: { ...defaultValues },
   });
 
-  const onSubmit = (values: FormData) => {
-    updateUser({
-      userId: auth.getDecodedToken()?.id ?? '',
-      body: {
-        ...values,
-      },
-    });
-    showSuccessToast('User Updated', 'User edited successfully.!');
+  const onSubmit = async (values: FormData) => {
+    try {
+      await updateUser({
+        userId: auth.getDecodedToken()?.id ?? '',
+        body: {
+          ...values,
+        },
+      });
+      showSuccessToast('User Updated', 'User edited successfully.!');
+    } catch {}
   };
 
   return (

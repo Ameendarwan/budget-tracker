@@ -11,8 +11,10 @@ import { LoginPayload } from './types';
 import SVGIcon from '@app/components/SVGIcon';
 import auth from '@app/utils/auth';
 import { paths } from '@app/routes/Routes.utils';
+import { setUserDetails } from '@app/store/slices/user';
 import signinImage from '@app/assets/auth/sign-in.png';
 import { signinValidationSchema } from './SignIn.utils';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useLoginMutation } from '@app/store/apis/auth';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +22,7 @@ import { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -41,6 +44,10 @@ const SignIn = () => {
           ...data,
         },
       }).unwrap();
+      if (!!result.user) {
+        dispatch(setUserDetails(result?.user));
+        localStorage.setItem('user-details', JSON.stringify(result?.user ?? {}));
+      }
       auth.saveToken(result.token);
       navigate(paths.analysis);
     } catch {

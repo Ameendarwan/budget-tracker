@@ -3,6 +3,7 @@ import { isFetchError, isServerError } from '@app/lib//api';
 
 import type { ServerError } from '@app/lib//api';
 import { ToastService } from '@app/services/toastService';
+import { showErrorToast } from '@app/components/Toast/Toast';
 
 /**
  * Middleware to save 'alert' objects to the Redux store when server errors or custom alerts are received by RTK
@@ -16,9 +17,9 @@ const notify: Middleware = () => next => action => {
   // Handle server generated errors :: Checks the object schema matches the server error schema
   if (isRejectedWithValue(action) && isServerError(action.payload)) {
     const { payload } = action as { payload: ServerError };
-    toast.error(`${payload.data.message}`, { duration: 8000 });
+    showErrorToast('Failed', `${payload.data.message}`);
   } else if (isRejectedWithValue(action) && isFetchError(action?.payload)) {
-    toast.error('Your request was blocked by a CORS policy. Please contact your administrator.', { duration: 8000 });
+    showErrorToast('CORS', 'Your request was blocked by a CORS policy. Please contact your administrator.');
   }
   return next(action);
 };

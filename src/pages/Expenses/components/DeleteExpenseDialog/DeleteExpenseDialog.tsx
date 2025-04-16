@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 
 import { Button } from '@app/components/Button/Button';
 import { DeleteExpenseDialogProps } from './types';
-import { showSuccessToast } from '@app/components/Toast/Toast';
+import { showErrorToast } from '@app/components/Toast/Toast';
 import { useDeleteExpenseMutation } from '@app/store/apis/expense';
 
 const DeleteExpenseDialog: FC<DeleteExpenseDialogProps> = ({ expense, isOpen, setIsOpen }) => {
@@ -17,7 +17,7 @@ const DeleteExpenseDialog: FC<DeleteExpenseDialogProps> = ({ expense, isOpen, se
     try {
       await deleteExpense({ expenseId: expense._id ?? '' });
       handleClose();
-      showSuccessToast('Expense deleted', 'Expense deleted successfully.!');
+      showErrorToast('Expense deleted', 'Expense deleted successfully.!');
     } catch {
       console.error('Failed to delete user');
     }

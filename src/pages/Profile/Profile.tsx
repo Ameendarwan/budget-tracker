@@ -1,15 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@app/components/Avatar/Avatar';
 import React, { useState } from 'react';
+import { useGetUserQuery, useUploadProfilePictureMutation } from '@app/store/apis/user';
 
 import { Card } from '@app/components/Card/Card';
 import EditAccountDetails from './components/EditAccountDetails';
 import Loader from '@app/components/Loader/Loader';
+import { Pencil } from 'lucide-react';
 import SVGIcon from '@app/components/SVGIcon';
 import { Separator } from '@app/components/Separator/Separator';
 import ViewAccountDetails from './components/ViewAccountDetails';
 import auth from '@app/utils/auth';
 import { paths } from '@app/routes/Routes.utils';
-import { useGetUserQuery } from '@app/store/apis/user';
+import { showSuccessToast } from '@app/components/Toast/Toast';
 import { useNavigate } from 'react-router-dom';
 
 const Profile: React.FC = () => {
@@ -19,6 +21,22 @@ const Profile: React.FC = () => {
   const userId = auth.getDecodedToken()?.id ?? '';
 
   const { data, isLoading } = useGetUserQuery({ userId });
+  const [uploadPicture, { isLoading: uploadLoading }] = useUploadProfilePictureMutation();
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        await uploadPicture({ body: formData }).unwrap();
+        showSuccessToast('Profile Picture', 'Profile picture has been updated');
+      } catch (error) {
+        console.error('Upload failed:', error);
+      }
+    }
+  };
 
   if (isLoading) return <Loader isFullPageLoader />;
 
@@ -71,10 +89,39 @@ const Profile: React.FC = () => {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* User profile card */}
         <Card className="max-h-max rounded-[8px] px-4 pb-6 pt-8 text-center shadow-custom md:col-span-1">
-          <Avatar className="mx-auto mb-4 h-[100px] w-[100px]" aria-label="User avatar">
-            <AvatarImage src={data?.profilePic ?? ''} />
-            <AvatarFallback>{`${data?.firstName?.[0] ?? 'U'}${data?.lastName?.[0] ?? ''}`}</AvatarFallback>
-          </Avatar>
+          <div className="relative mx-auto mb-4 h-[100px] w-[100px]">
+            {/* Hidden File Input */}
+            <input
+              id="avatar-upload"
+              disabled={tab === 1 || uploadLoading}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+
+            {/* Avatar Label as Button */}
+            <label htmlFor="avatar-upload" className="group block h-full w-full cursor-pointer">
+              <Avatar className="h-full w-full">
+                <AvatarImage src={data?.profilePic ?? ''} />
+                <AvatarFallback>{`${data?.firstName?.[0] ?? 'U'}${data?.lastName?.[0] ?? ''}`}</AvatarFallback>
+              </Avatar>
+
+              {/* Overlay */}
+              {tab === 2 && (
+                <div className="absolute inset-0 !z-50 flex flex-col items-center justify-center rounded-full bg-black/40 transition-opacity group-hover:opacity-100">
+                  {uploadLoading ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      <Pencil className="mb-1 text-white" size={16} />
+                      <span className="text-xs font-medium text-white">Edit / Update</span>
+                    </>
+                  )}
+                </div>
+              )}
+            </label>
+          </div>
           <h2 className="text-lg font-semibold" aria-label="User full name">
             {data?.firstName} {data?.lastName}
           </h2>
@@ -107,7 +154,7 @@ const Profile: React.FC = () => {
                 <SVGIcon icon="location" aria-hidden />
               </span>
               <span className="text-grayShades-shade1" aria-label="User city">
-                {data?.city}
+                {data?.city ?? data?.state ?? ''}
               </span>
             </div>
             <div className="flex items-center justify-center">

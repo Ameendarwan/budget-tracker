@@ -7,6 +7,7 @@ import TimeAgo from '../TimeAgo';
 import auth from '@app/utils/auth';
 import { paths } from '@app/routes/Routes.utils';
 import { useGetNotificationsQuery } from '@app/store/apis/notification';
+import { useGetUserQuery } from '@app/store/apis/user';
 import { useNavigate } from 'react-router-dom';
 import { useSidebar } from '../Sidebar/Sidebar';
 
@@ -15,6 +16,8 @@ const TopBar = () => {
   const { state, setOpen, isMobile, toggleSidebar } = useSidebar();
 
   const userId = auth.getDecodedToken()?.id ?? '';
+
+  const { data: user } = useGetUserQuery({ userId });
 
   const { data } = useGetNotificationsQuery({ userId });
 
@@ -34,6 +37,8 @@ const TopBar = () => {
     }
   };
 
+  const initials = `${user?.firstName?.[0] ?? ''}${user?.lastName?.[0] ?? ''}`.toUpperCase();
+
   return (
     <div className="flex h-[90px] w-full flex-row items-center justify-between border-b px-6">
       <SVGIcon
@@ -48,43 +53,45 @@ const TopBar = () => {
               <SVGIcon className="cursor-pointer" icon="notification" />
             </span>
           </PopoverTrigger>
-          <PopoverContent
-            side="bottom"
-            align="end"
-            sideOffset={15}
-            className="h-[400px] w-80 space-y-2 overflow-y-auto rounded-[12px] border-none p-2 !shadow-custom">
-            {data?.map(n => (
-              <div key={n._id} className="flex items-start gap-3 rounded-xl p-3 transition hover:bg-gray-100">
-                <div className="mt-1">{getSVGIcon(n.type)}</div>
-                <div className="text-sm">
-                  <p className="text-[13px] font-medium text-[#464646]">{n.title}</p>
-                  <p className="text-[13px] text-[#464646]">{n.message}</p>
-                  <TimeAgo date={n.createdAt} className="!mt-2 block text-xs text-[#667085]" />
+          {!!data?.length && (
+            <PopoverContent
+              side="bottom"
+              align="end"
+              sideOffset={15}
+              className="max-h-[400px] w-80 space-y-2 overflow-y-auto rounded-[12px] border-none p-2 !shadow-custom">
+              {data?.map(n => (
+                <div key={n._id} className="flex items-start gap-3 rounded-xl p-3 transition hover:bg-gray-100">
+                  <div className="mt-1">{getSVGIcon(n.type)}</div>
+                  <div className="text-sm">
+                    <p className="text-[13px] font-medium text-[#464646]">{n.title}</p>
+                    <p className="text-[13px] text-[#464646]">{n.message}</p>
+                    <TimeAgo date={n.createdAt} className="!mt-2 block text-xs text-[#667085]" />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </PopoverContent>
+              ))}
+            </PopoverContent>
+          )}
         </Popover>
 
         <Popover>
           <PopoverTrigger asChild>
             <Avatar className="cursor-pointer">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback className="text-base text-white">AD</AvatarFallback>
+              <AvatarImage src={user?.profilePic ?? 'https://github.com/shadcn.png'} />
+              <AvatarFallback className="text-base text-white">{initials ?? 'AD'}</AvatarFallback>
             </Avatar>
           </PopoverTrigger>
           <PopoverContent
             side="bottom"
             align="end"
             sideOffset={12}
-            className="w-72 rounded-2xl border-none p-4 !shadow-custom">
+            className="w-full rounded-2xl border-none p-4 !shadow-custom">
             <div className="mb-4 flex items-center gap-4">
-              <div className="flex h-[42px] w-[42px] items-center justify-center rounded-full bg-rose-200 text-lg font-medium text-white">
-                A
+              <div className="flex !h-[42px] !w-[42px] items-center justify-center rounded-full bg-primary text-lg font-medium text-white">
+                {initials ?? 'AD'}
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-800">Ameen Darwan</p>
-                <p className="text-sm text-gray-500">ameen.darwan@gmail.com</p>
+                <p className="text-sm font-semibold text-gray-800">{`${user?.firstName} ${user?.lastName}`}</p>
+                <p className="text-sm text-gray-500">{user?.email}</p>
               </div>
             </div>
             <div className="border-t border-gray-200 pt-2">
