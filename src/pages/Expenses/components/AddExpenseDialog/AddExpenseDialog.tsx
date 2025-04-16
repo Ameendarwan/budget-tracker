@@ -75,11 +75,11 @@ const AddExpenseDialog: FC<AddExpenseDialogProps> = ({ id, defaultValues, mode =
         }).unwrap();
         showSuccessToast('Expense Updated', 'Expense edited successfully!');
       }
-      form.reset();
-      handleClose();
     } catch {
       console.error('Failed to update');
     }
+    form.reset();
+    handleClose();
   };
 
   const isLoading = useMemo(() => createLoading || updateLoading, [createLoading, updateLoading]);

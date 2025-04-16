@@ -97,11 +97,10 @@ describe('AddUserDialog', () => {
           firstName: 'Jane',
           lastName: 'Smith',
           email: 'jane.smith@example.com',
-          phoneNumber: '(555) 123-4567',
-          budgetLimit: 10000,
+          // phoneNumber and budgetLimit are excluded because they weren’t changed
         },
       });
-      expect(setIsOpen).toHaveBeenCalledWith(null); // Ensure the dialog closes after submission
+      expect(setIsOpen).toHaveBeenCalledWith(null);
     });
   });
 

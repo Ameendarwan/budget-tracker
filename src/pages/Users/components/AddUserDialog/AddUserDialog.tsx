@@ -73,11 +73,11 @@ const AddUserDialog: FC<AddUserDialogProps> = ({ id, defaultValues, mode = 'crea
         }).unwrap();
         showSuccessToast('User Updated', 'User edited successfully.!');
       }
-      handleClose();
-      form.reset();
     } catch {
       console.error('Failed to update user');
     }
+    form.reset();
+    handleClose();
   };
 
   const isLoading = useMemo(() => createLoading || updateLoading, [createLoading, updateLoading]);
